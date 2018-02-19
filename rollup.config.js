@@ -14,11 +14,6 @@ module.exports = [
             format: 'umd',
             name: 'marker-clusterer'
         },
-        globals: {
-            'mixins.events': 'mixins.events',
-            'view': 'view',
-            'equaljs': 'equaljs'
-        },
         plugins: [
             typescript({
                 typescript: require('typescript')
