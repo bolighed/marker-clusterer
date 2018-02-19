@@ -6,7 +6,7 @@ export class Cluster {
     private _clusterIcon: ClusterIcon;
     private _markerClusterer: MarkerClusterer;
     private _markers: google.maps.Marker[] = [];
-    private _bounds: google.maps.LatLngBounds | null;
+    private _bounds: google.maps.LatLngBounds | undefined;
     private _map: google.maps.Map;
     private _averageCenter: boolean;
     private _center: google.maps.LatLng | undefined;
@@ -35,7 +35,7 @@ export class Cluster {
     get markerCluster() { return this._markerClusterer; }
 
     getBounds() {
-        const bounds = new google.maps.LatLngBounds(this.center, this.center);
+        const bounds = new google.maps.LatLngBounds(this.center!, this.center!);
         for (let i = 0, ii = this.size; i < ii; i++) {
             bounds.extend(this.markers[i].getPosition());
         }
@@ -104,12 +104,12 @@ export class Cluster {
 
 
     isMarkerInClusterBounds(marker: google.maps.Marker) {
-        return this._bounds.contains(marker.getPosition());
+        return this._bounds!.contains(marker.getPosition());
     }
 
 
     private _calculateBounds() {
-        var bounds = new google.maps.LatLngBounds(this.center, this.center);
+        var bounds = new google.maps.LatLngBounds(this.center!, this.center!);
         this._bounds = this._markerClusterer.getExtendedBounds(bounds);
     }
 
@@ -129,8 +129,8 @@ export class Cluster {
         }
 
         var numStyles = this._markerClusterer.styles.length;
-        var sums = this._markerClusterer.calculator(this.markers, numStyles);
-        this._clusterIcon.setCenter(this.center);
+        var sums = this._markerClusterer.calculator!(this.markers, numStyles);
+        this._clusterIcon.setCenter(this.center!);
         this._clusterIcon.useStyle(sums);
         this._clusterIcon.show();
     }

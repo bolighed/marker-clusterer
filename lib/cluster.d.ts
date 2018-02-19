@@ -15,7 +15,7 @@ export declare class Cluster {
     readonly size: number;
     readonly markers: google.maps.Marker[];
     readonly markerCluster: MarkerClusterer;
-    getBounds(): any;
+    getBounds(): google.maps.LatLngBounds;
     remove(): void;
     addMarker(marker: google.maps.Marker): boolean;
     isMarkerInClusterBounds(marker: google.maps.Marker): boolean;

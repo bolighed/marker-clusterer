@@ -19,9 +19,9 @@ export interface MarkerClusterer extends google.maps.OverlayView {
     batchSizeIE: number;
     clusterClass: string;
 
-    addMarker(marker: google.maps.Marker);
-    getExtendedBounds(bounds: google.maps.LatLngBounds);
-    clearMarkers();
+    addMarker(marker: google.maps.Marker): any;
+    getExtendedBounds(bounds: google.maps.LatLngBounds): any;
+    clearMarkers(): any;
     calculator?: (markers: google.maps.Marker[], numStyles: number) => any;
 }
 
@@ -45,7 +45,10 @@ export interface MarkerClustererOptions {
     calculator?: (markers: google.maps.Marker[], numStyles: number) => any;
 }
 
-export function markerClustererFactory() {
+
+export type MarkerClustererCTOR = new (map: google.maps.Map, options: MarkerClustererOptions) => MarkerClusterer
+
+export function markerClustererFactory(): MarkerClustererCTOR {
 
     class MarkerClusterer extends google.maps.OverlayView {
 
@@ -53,7 +56,7 @@ export function markerClustererFactory() {
         private _markers: google.maps.Marker[] = [];
         private _ready: boolean = false;
         private _listeners: google.maps.MapsEventListener[];
-        private _timerRefStatic: NodeJS.Timer | undefined;
+        private _timerRefStatic: number | undefined;
 
         //#region Properties
 
@@ -87,8 +90,8 @@ export function markerClustererFactory() {
             Object.assign(this, {
                 batchSize: 2000,
                 batchSizeIE: 500,
-                imagePath: '/static/images/pins/pin',
-                imageExtension: 'svg',
+                imagePath: 'm',
+                imageExtension: 'png',
                 imageSizes: [53, 56, 66, 68, 90],
                 calculator: Calculator,
                 avarageCenter: false,
@@ -300,7 +303,7 @@ export function markerClustererFactory() {
             // Reset the markers to not be added and to be removed from the map.
             for (i = 0; i < this._markers.length; i++) {
                 marker = this._markers[i];
-                marker.isAdded = false;
+                (marker as any).isAdded = false;
                 if (hide) {
                     marker.setMap(null);
                 }
@@ -380,8 +383,8 @@ export function markerClustererFactory() {
             //
             // See Comments 9 & 11 on Issue 3651 relating to this workaround for a Google Maps bug:
             if (map.getZoom() > 3) {
-                mapBounds = new google.maps.LatLngBounds(map.getBounds().getSouthWest(),
-                    map.getBounds().getNorthEast());
+                mapBounds = new google.maps.LatLngBounds(map.getBounds()!.getSouthWest(),
+                    map.getBounds()!.getNorthEast());
             } else {
                 mapBounds = new google.maps.LatLngBounds(new google.maps.LatLng(85.02070771743472, -178.48388434375), new google.maps.LatLng(-85.08136444384544, 178.00048865625));
             }
@@ -391,7 +394,7 @@ export function markerClustererFactory() {
 
             for (i = firstIndex; i < iLast; i++) {
                 marker = this.markers[i];
-                if (!marker.isAdded && this._isMarkerInBounds(marker, bounds)) {
+                if (!(marker as any).isAdded && this._isMarkerInBounds(marker, bounds)) {
                     if (!this.ignoreHidden || (this.ignoreHidden && marker.getVisible())) {
                         this._addToClosestCluster(marker);
                     }

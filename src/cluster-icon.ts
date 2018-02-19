@@ -19,7 +19,7 @@ export function clusterIconFactory(): ClusterIconCtor {
     return class ClusterIcon extends google.maps.OverlayView {
 
         //private _map: google.maps.Map;
-        private _div: HTMLDivElement;
+        private _div: HTMLDivElement | undefined;
         private _visible: boolean;
         private _className: string;
         private _center: google.maps.LatLng;
@@ -55,8 +55,8 @@ export function clusterIconFactory(): ClusterIconCtor {
 
 
         onAdd() {
-            var cMouseDownInCluster;
-            var cDraggingMapByCluster;
+            var cMouseDownInCluster: boolean;
+            var cDraggingMapByCluster: boolean;
 
             this._div = document.createElement("div");
             this._div.className = this._className;
@@ -76,11 +76,11 @@ export function clusterIconFactory(): ClusterIconCtor {
                 cDraggingMapByCluster = false;
             });
 
-            google.maps.event.addDomListener(this._div, "click", (e) => {
+            google.maps.event.addDomListener(this._div, "click", (e: any) => {
                 cMouseDownInCluster = false;
                 if (!cDraggingMapByCluster) {
-                    var theBounds;
-                    var mz;
+                    var theBounds: google.maps.LatLngBounds;
+                    var mz: number;
                     var mc = this.cluster.markerCluster;
                     /**
                      * This event is fired when a cluster marker is clicked.
@@ -148,7 +148,7 @@ export function clusterIconFactory(): ClusterIconCtor {
                 google.maps.event.removeListener(this._boundsChangedListener);
                 google.maps.event.clearInstanceListeners(this._div);
                 this._div.parentNode.removeChild(this._div);
-                this._div = null;
+                this._div = void 0;
             }
         }
 
@@ -156,8 +156,8 @@ export function clusterIconFactory(): ClusterIconCtor {
         draw() {
             if (this._visible) {
                 var pos = this._getPosFromLatLng(this._center);
-                this._div.style.top = pos.y + "px";
-                this._div.style.left = pos.x + "px";
+                this._div!.style.top = pos.y + "px";
+                this._div!.style.left = pos.x + "px";
             }
         }
 
