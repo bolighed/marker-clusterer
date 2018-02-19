@@ -1,4 +1,5 @@
 /// <reference types="googlemaps" />
+import { ClusterIconCtor } from './cluster-icon';
 import { MarkerClusterer } from './marker-clusterer';
 export declare class Cluster {
     private _clusterIcon;
@@ -10,7 +11,7 @@ export declare class Cluster {
     private _center;
     private _gridSize;
     private _minClusterSize;
-    constructor(markerClusterer: MarkerClusterer);
+    constructor(markerClusterer: MarkerClusterer, CustomClusterIcon?: ClusterIconCtor);
     center: google.maps.LatLng | null;
     readonly size: number;
     readonly markers: google.maps.Marker[];

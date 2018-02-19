@@ -1,9 +1,12 @@
-import { ClusterIcon, clusterIconFactory } from './cluster-icon';
+import { IClusterIcon, clusterIconFactory, ClusterIconCtor } from './cluster-icon';
 import { MarkerClusterer } from './marker-clusterer';
+
+// We wanna cache the resolved ClusterIcon
+var ClusterIconConstructor: ClusterIconCtor;
 
 export class Cluster {
 
-    private _clusterIcon: ClusterIcon;
+    private _clusterIcon: IClusterIcon;
     private _markerClusterer: MarkerClusterer;
     private _markers: google.maps.Marker[] = [];
     private _bounds: google.maps.LatLngBounds | undefined;
@@ -13,14 +16,17 @@ export class Cluster {
     private _gridSize: number;
     private _minClusterSize: number;
 
-    constructor(markerClusterer: MarkerClusterer) {
+    constructor(markerClusterer: MarkerClusterer, CustomClusterIcon?: ClusterIconCtor) {
+        if (!ClusterIconConstructor)
+            ClusterIconConstructor = clusterIconFactory();
+
         this._markerClusterer = markerClusterer;
-        this._clusterIcon = new (clusterIconFactory())(this, markerClusterer.styles);
+        this._clusterIcon = new (CustomClusterIcon || ClusterIconConstructor)(this, markerClusterer.styles);
 
         this._map = markerClusterer.getMap() as google.maps.Map;
-        this._gridSize = markerClusterer.gridSize;
-        this._minClusterSize = markerClusterer.minClusterSize;
-        this._averageCenter = markerClusterer.avarageCenter;
+        this._gridSize = markerClusterer.gridSize!;
+        this._minClusterSize = markerClusterer.minClusterSize!;
+        this._averageCenter = markerClusterer.avarageCenter!;
         this._markers = [];
         this._center = void 0;
         this._bounds = void 0;
@@ -79,7 +85,7 @@ export class Cluster {
 
         mCount = this._markers.length;
         mz = this._markerClusterer.maxZoom;
-        if (mz !== null && this._map.getZoom() > mz) {
+        if (mz != null && this._map.getZoom() > mz) {
             // Zoomed in past max zoom, so show the marker.
             if (marker.getMap() !== this._map) {
                 marker.setMap(this._map);
@@ -117,7 +123,7 @@ export class Cluster {
         var mCount = this.markers.length;
         var mz = this._markerClusterer.maxZoom;
 
-        if (mz !== null && this._map.getZoom() > mz) {
+        if (mz != null && this._map.getZoom() > mz) {
             this._clusterIcon.hide();
             return;
         }
@@ -128,7 +134,7 @@ export class Cluster {
             return;
         }
 
-        var numStyles = this._markerClusterer.styles.length;
+        var numStyles = this._markerClusterer.styles!.length;
         var sums = this._markerClusterer.calculator!(this.markers, numStyles);
         this._clusterIcon.setCenter(this.center!);
         this._clusterIcon.useStyle(sums);

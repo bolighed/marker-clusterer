@@ -4,22 +4,62 @@
 	(factory((global['marker-clusterer'] = {})));
 }(this, (function (exports) { 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
 
 function clusterIconFactory() {
     return function (_google$maps$OverlayV) {
-        _inherits(ClusterIcon, _google$maps$OverlayV);
+        inherits(ClusterIconImpl, _google$maps$OverlayV);
 
-        function ClusterIcon(cluster, styles) {
-            _classCallCheck(this, ClusterIcon);
+        function ClusterIconImpl(cluster, styles) {
+            classCallCheck(this, ClusterIconImpl);
 
-            var _this = _possibleConstructorReturn(this, (ClusterIcon.__proto__ || Object.getPrototypeOf(ClusterIcon)).call(this));
+            var _this = possibleConstructorReturn(this, (ClusterIconImpl.__proto__ || Object.getPrototypeOf(ClusterIconImpl)).call(this));
 
             _this.cluster = cluster;
             _this.styles = styles;
@@ -31,7 +71,7 @@ function clusterIconFactory() {
         //set map(map: google.maps.Map) { this._map = map; }
 
 
-        _createClass(ClusterIcon, [{
+        createClass(ClusterIconImpl, [{
             key: "onAdd",
             value: function onAdd() {
                 var _this2 = this;
@@ -39,7 +79,7 @@ function clusterIconFactory() {
                 var cMouseDownInCluster;
                 var cDraggingMapByCluster;
                 this._div = document.createElement("div");
-                this._div.className = this._className;
+                this._div.className = this._className || '';
                 if (this._visible) {
                     this.show();
                 }
@@ -78,7 +118,7 @@ function clusterIconFactory() {
                             setTimeout(function () {
                                 map.fitBounds(theBounds);
                                 // Don't zoom beyond the max zoom level
-                                if (mz !== null && map.getZoom() > mz) {
+                                if (mz != null && map.getZoom() > mz) {
                                     map.setZoom(mz + 1);
                                 }
                             }, 100);
@@ -157,7 +197,7 @@ function clusterIconFactory() {
                     img += "'>";
                     this._div.innerHTML = img + "<div style='" + "position: absolute;" + "top: " + this._anchorText[0] + "px;" + "left: " + this._anchorText[1] + "px;" + "color: " + this._textColor + ";" + "font-size: " + this._textSize + "px;" + "font-family: " + this._fontFamily + ";" + "font-weight: " + this._fontWeight + ";" + "font-style: " + this._fontStyle + ";" + "text-decoration: " + this._textDecoration + ";" + "text-align: center;" + "width: " + this._width + "px;" + "line-height:" + this._height + "px;" + "'>" + this._sums.text + "</div>";
                     if (typeof this._sums.title === "undefined" || this._sums.title === "") {
-                        this._div.title = this.cluster.markerCluster.title;
+                        this._div.title = this.cluster.markerCluster.title || '';
                     } else {
                         this._div.title = this._sums.title;
                     }
@@ -210,22 +250,21 @@ function clusterIconFactory() {
                 return pos;
             }
         }]);
-
-        return ClusterIcon;
+        return ClusterIconImpl;
     }(google.maps.OverlayView);
 }
 
-var _createClass$1 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+// We wanna cache the resolved ClusterIcon
+var ClusterIconConstructor;
 
 var Cluster = function () {
-    function Cluster(markerClusterer) {
-        _classCallCheck$1(this, Cluster);
+    function Cluster(markerClusterer, CustomClusterIcon) {
+        classCallCheck(this, Cluster);
 
         this._markers = [];
+        if (!ClusterIconConstructor) ClusterIconConstructor = clusterIconFactory();
         this._markerClusterer = markerClusterer;
-        this._clusterIcon = new (clusterIconFactory())(this, markerClusterer.styles);
+        this._clusterIcon = new (CustomClusterIcon || ClusterIconConstructor)(this, markerClusterer.styles);
         this._map = markerClusterer.getMap();
         this._gridSize = markerClusterer.gridSize;
         this._minClusterSize = markerClusterer.minClusterSize;
@@ -235,7 +274,7 @@ var Cluster = function () {
         this._bounds = void 0;
     }
 
-    _createClass$1(Cluster, [{
+    createClass(Cluster, [{
         key: 'getBounds',
         value: function getBounds() {
             var bounds = new google.maps.LatLngBounds(this.center, this.center);
@@ -278,7 +317,7 @@ var Cluster = function () {
             this._markers.push(marker);
             mCount = this._markers.length;
             mz = this._markerClusterer.maxZoom;
-            if (mz !== null && this._map.getZoom() > mz) {
+            if (mz != null && this._map.getZoom() > mz) {
                 // Zoomed in past max zoom, so show the marker.
                 if (marker.getMap() !== this._map) {
                     marker.setMap(this._map);
@@ -315,7 +354,7 @@ var Cluster = function () {
         value: function _updateIcon() {
             var mCount = this.markers.length;
             var mz = this._markerClusterer.maxZoom;
-            if (mz !== null && this._map.getZoom() > mz) {
+            if (mz != null && this._map.getZoom() > mz) {
                 this._clusterIcon.hide();
                 return;
             }
@@ -347,43 +386,33 @@ var Cluster = function () {
         }
     }, {
         key: 'size',
-        get: function get() {
+        get: function get$$1() {
             return this._markers.length;
         }
     }, {
         key: 'markers',
-        get: function get() {
+        get: function get$$1() {
             return this._markers;
         }
     }, {
         key: 'markerCluster',
-        get: function get() {
+        get: function get$$1() {
             return this._markerClusterer;
         }
     }]);
-
     return Cluster;
 }();
 
-var _createClass$2 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn$1(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 function markerClustererFactory() {
-    var MarkerClusterer = function (_google$maps$OverlayV) {
-        _inherits$1(MarkerClusterer, _google$maps$OverlayV);
+    var MarkerClustererImpl = function (_google$maps$OverlayV) {
+        inherits(MarkerClustererImpl, _google$maps$OverlayV);
 
         //#endregion
-        function MarkerClusterer(map) {
+        function MarkerClustererImpl(map) {
             var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+            classCallCheck(this, MarkerClustererImpl);
 
-            _classCallCheck$2(this, MarkerClusterer);
-
-            var _this = _possibleConstructorReturn$1(this, (MarkerClusterer.__proto__ || Object.getPrototypeOf(MarkerClusterer)).call(this));
+            var _this = possibleConstructorReturn(this, (MarkerClustererImpl.__proto__ || Object.getPrototypeOf(MarkerClustererImpl)).call(this));
 
             _this._clusters = [];
             _this._markers = [];
@@ -413,14 +442,30 @@ function markerClustererFactory() {
             return _this;
         }
 
-        _createClass$2(MarkerClusterer, [{
+        createClass(MarkerClustererImpl, [{
             key: 'addMarker',
+
+            /**
+             * Add a marker to the clusterer
+             *
+             * @param {google.maps.Marker} marker
+             * @param {boolean} [redraw=true]
+             * @memberof MarkerClustererImpl
+             */
             value: function addMarker(marker) {
                 var redraw = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
                 this._pushMarkerTo(marker);
                 if (redraw) this._redraw();
             }
+            /**
+             * Added a list of markers to the clusterer
+             *
+             * @param {google.maps.Marker[]} markers
+             * @param {boolean} [redraw=true]
+             * @memberof MarkerClustererImpl
+             */
+
         }, {
             key: 'addMarkers',
             value: function addMarkers(markers) {
@@ -430,6 +475,15 @@ function markerClustererFactory() {
                     this._pushMarkerTo(markers[i]);
                 }if (redraw) this._redraw();
             }
+            /**
+             * Remove a marker from
+             *
+             * @param {google.maps.Marker} marker
+             * @param {boolean} [redraw=true]
+             * @returns
+             * @memberof MarkerClustererImpl
+             */
+
         }, {
             key: 'removeMarker',
             value: function removeMarker(marker) {
@@ -441,6 +495,15 @@ function markerClustererFactory() {
                 }
                 return removed;
             }
+            /**
+             * Remove a list of markers
+             *
+             * @param {google.maps.Marker[]} markers
+             * @param {boolean} [redraw=true]
+             * @returns
+             * @memberof MarkerClustererImpl
+             */
+
         }, {
             key: 'removeMarkers',
             value: function removeMarkers(markers) {
@@ -639,7 +702,7 @@ function markerClustererFactory() {
                 if (clusterToAddTo && clusterToAddTo.isMarkerInClusterBounds(marker)) {
                     clusterToAddTo.addMarker(marker);
                 } else {
-                    cluster = new Cluster(this);
+                    cluster = new Cluster(this, this.ClusterIcon);
                     cluster.addMarker(marker);
                     this._clusters.push(cluster);
                 }
@@ -749,12 +812,11 @@ function markerClustererFactory() {
             }
         }, {
             key: 'markers',
-            get: function get() {
+            get: function get$$1() {
                 return this._markers;
             }
         }]);
-
-        return MarkerClusterer;
+        return MarkerClustererImpl;
     }(google.maps.OverlayView);
 
     var Calculator = function Calculator(markers, numStyles) {
@@ -773,7 +835,7 @@ function markerClustererFactory() {
             title: title
         };
     };
-    return MarkerClusterer;
+    return MarkerClustererImpl;
 }
 
 exports.markerClustererFactory = markerClustererFactory;

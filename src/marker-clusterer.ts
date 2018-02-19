@@ -1,29 +1,5 @@
 import { Cluster } from './cluster';
-
-
-export interface MarkerClusterer extends google.maps.OverlayView {
-    gridSize: number;
-    minClusterSize: number;
-    maxZoom: number;
-    styles: any[];
-    title: string;
-    zoomOnClick: boolean;
-    avarageCenter: boolean;
-    ignoreHidden: boolean;
-    enableRetinaIcons: boolean;
-
-    imagePath: string;
-    imageExtension: string
-    imageSizes: number[];
-    batchSize: number;
-    batchSizeIE: number;
-    clusterClass: string;
-
-    addMarker(marker: google.maps.Marker): any;
-    getExtendedBounds(bounds: google.maps.LatLngBounds): any;
-    clearMarkers(): any;
-    calculator?: (markers: google.maps.Marker[], numStyles: number) => any;
-}
+import { ClusterIconCtor } from './cluster-icon';
 
 
 export interface MarkerClustererOptions {
@@ -43,14 +19,43 @@ export interface MarkerClustererOptions {
     batchSize?: number;
     batchSizeIE?: number;
     calculator?: (markers: google.maps.Marker[], numStyles: number) => any;
+    ClusterIcon?: ClusterIconCtor;
 }
+
+export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustererOptions {
+    /*gridSize: number;
+    minClusterSize: number;
+    maxZoom: number;
+    styles: any[];
+    title: string;
+    zoomOnClick: boolean;
+    avarageCenter: boolean;
+    ignoreHidden: boolean;
+    enableRetinaIcons: boolean;
+
+    imagePath: string;
+    imageExtension: string
+    imageSizes: number[];
+    batchSize: number;
+    batchSizeIE: number;
+    clusterClass: string;
+    ClusterIcon?: ClusterIconCtor;*/
+
+    addMarker(marker: google.maps.Marker): any;
+    getExtendedBounds(bounds: google.maps.LatLngBounds): any;
+    clearMarkers(): any;
+    //calculator?: (markers: google.maps.Marker[], numStyles: number) => any;
+}
+
+
+
 
 
 export type MarkerClustererCTOR = new (map: google.maps.Map, options: MarkerClustererOptions) => MarkerClusterer
 
 export function markerClustererFactory(): MarkerClustererCTOR {
 
-    class MarkerClusterer extends google.maps.OverlayView {
+    class MarkerClustererImpl extends google.maps.OverlayView {
 
         private _clusters: Cluster[] = [];
         private _markers: google.maps.Marker[] = [];
@@ -76,6 +81,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         public batchSize: number;
         public batchSizeIE: number;
         public clusterClass: string;
+        public ClusterIcon?: ClusterIconCtor;
 
         public calculator: (markers: google.maps.Marker[], numStyles: number) => any;
 
@@ -114,13 +120,26 @@ export function markerClustererFactory(): MarkerClustererCTOR {
             this.setMap(map);
         }
 
-
+        /**
+         * Add a marker to the clusterer
+         * 
+         * @param {google.maps.Marker} marker 
+         * @param {boolean} [redraw=true] 
+         * @memberof MarkerClustererImpl
+         */
         addMarker(marker: google.maps.Marker, redraw: boolean = true) {
             this._pushMarkerTo(marker)
             if (redraw)
                 this._redraw();
         }
 
+        /**
+         * Added a list of markers to the clusterer
+         * 
+         * @param {google.maps.Marker[]} markers 
+         * @param {boolean} [redraw=true] 
+         * @memberof MarkerClustererImpl
+         */
         addMarkers(markers: google.maps.Marker[], redraw: boolean = true) {
             for (let i = 0, ii = markers.length; i < ii; i++)
                 this._pushMarkerTo(markers[i]);
@@ -129,6 +148,14 @@ export function markerClustererFactory(): MarkerClustererCTOR {
                 this._redraw();
         }
 
+        /**
+         * Remove a marker from
+         * 
+         * @param {google.maps.Marker} marker 
+         * @param {boolean} [redraw=true] 
+         * @returns 
+         * @memberof MarkerClustererImpl
+         */
         removeMarker(marker: google.maps.Marker, redraw: boolean = true) {
             var removed = this._removeMarker(marker);
 
@@ -139,6 +166,14 @@ export function markerClustererFactory(): MarkerClustererCTOR {
             return removed;
         }
 
+        /**
+         * Remove a list of markers
+         * 
+         * @param {google.maps.Marker[]} markers 
+         * @param {boolean} [redraw=true] 
+         * @returns 
+         * @memberof MarkerClustererImpl
+         */
         removeMarkers(markers: google.maps.Marker[], redraw: boolean = true) {
             var i, r;
             var removed = false;
@@ -345,7 +380,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
             if (clusterToAddTo && clusterToAddTo.isMarkerInClusterBounds(marker)) {
                 clusterToAddTo.addMarker(marker);
             } else {
-                cluster = new Cluster(this);
+                cluster = new Cluster(this, this.ClusterIcon);
                 cluster.addMarker(marker);
                 this._clusters.push(cluster);
             }
@@ -404,7 +439,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
             if (iLast < this.markers.length) {
                 this._timerRefStatic = setTimeout(() => {
                     this._createClusters(iLast);
-                }, 0) as any;
+                }, 0);
             } else {
                 delete this._timerRefStatic;
 
@@ -485,7 +520,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         };
     }
 
-    return MarkerClusterer;
+    return MarkerClustererImpl;
 
 }
 

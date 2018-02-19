@@ -6,22 +6,22 @@ export interface ClusterIconInfo {
     text: string;
 }
 
-export interface ClusterIcon extends google.maps.OverlayView {
+export interface IClusterIcon extends google.maps.OverlayView {
     hide(): any;
     show(): any;
     setCenter(lnglat: google.maps.LatLng): any;
-    useStyle(a: any): any;
+    useStyle(a: ClusterIconInfo): any;
 }
 
-export type ClusterIconCtor = new (cluster: Cluster, styles: any) => ClusterIcon;
+export type ClusterIconCtor = new (cluster: Cluster, styles: any) => IClusterIcon;
 
 export function clusterIconFactory(): ClusterIconCtor {
-    return class ClusterIcon extends google.maps.OverlayView {
+    return class ClusterIconImpl extends google.maps.OverlayView {
 
         //private _map: google.maps.Map;
         private _div: HTMLDivElement | undefined;
         private _visible: boolean;
-        private _className: string;
+        private _className: string | undefined;
         private _center: google.maps.LatLng;
         private _boundsChangedListener: google.maps.MapsEventListener;
         private _sums: ClusterIconInfo;
@@ -59,7 +59,7 @@ export function clusterIconFactory(): ClusterIconCtor {
             var cDraggingMapByCluster: boolean;
 
             this._div = document.createElement("div");
-            this._div.className = this._className;
+            this._div.className = this._className || '';
             if (this._visible) {
                 this.show();
             }
@@ -80,7 +80,7 @@ export function clusterIconFactory(): ClusterIconCtor {
                 cMouseDownInCluster = false;
                 if (!cDraggingMapByCluster) {
                     var theBounds: google.maps.LatLngBounds;
-                    var mz: number;
+                    var mz: number | undefined;
                     var mc = this.cluster.markerCluster;
                     /**
                      * This event is fired when a cluster marker is clicked.
@@ -105,7 +105,7 @@ export function clusterIconFactory(): ClusterIconCtor {
                         setTimeout(function () {
                             map.fitBounds(theBounds);
                             // Don't zoom beyond the max zoom level
-                            if (mz !== null && (map.getZoom() > mz)) {
+                            if (mz != null && (map.getZoom() > mz)) {
                                 map.setZoom(mz + 1);
                             }
                         }, 100);
@@ -199,7 +199,7 @@ export function clusterIconFactory(): ClusterIconCtor {
                     "line-height:" + this._height + "px;" +
                     "'>" + this._sums.text + "</div>";
                 if (typeof this._sums.title === "undefined" || this._sums.title === "") {
-                    this._div.title = this.cluster.markerCluster.title;
+                    this._div.title = this.cluster.markerCluster.title || '';
                 } else {
                     this._div.title = this._sums.title;
                 }
