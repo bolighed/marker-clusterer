@@ -1,9 +1,11 @@
 /// <reference types="googlemaps" />
 import { ClusterIconCtor } from './cluster-icon';
-export interface MarkerLike extends google.maps.OverlayView {
+export interface MarkerLike {
     getPosition(): google.maps.LatLng;
     getDraggable(): boolean;
     getVisible(): boolean;
+    setMap(map: google.maps.Map | google.maps.StreetViewPanorama | null): any;
+    getMap(): google.maps.Map | google.maps.StreetViewPanorama;
 }
 export interface MarkerClustererOptions {
     gridSize?: number;
