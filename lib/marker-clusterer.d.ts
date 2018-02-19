@@ -1,5 +1,10 @@
 /// <reference types="googlemaps" />
 import { ClusterIconCtor } from './cluster-icon';
+export interface MarkerLike extends google.maps.OverlayView {
+    getPosition(): google.maps.LatLng;
+    getDraggable(): boolean;
+    getVisible(): boolean;
+}
 export interface MarkerClustererOptions {
     gridSize?: number;
     minClusterSize?: number;
@@ -16,11 +21,11 @@ export interface MarkerClustererOptions {
     imageSizes?: number[];
     batchSize?: number;
     batchSizeIE?: number;
-    calculator?: (markers: google.maps.Marker[], numStyles: number) => any;
+    calculator?: (markers: MarkerLike[], numStyles: number) => any;
     ClusterIcon?: ClusterIconCtor;
 }
 export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustererOptions {
-    addMarker(marker: google.maps.Marker): any;
+    addMarker(marker: MarkerLike): any;
     getExtendedBounds(bounds: google.maps.LatLngBounds): any;
     clearMarkers(): any;
 }

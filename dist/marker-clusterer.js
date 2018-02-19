@@ -448,7 +448,7 @@ function markerClustererFactory() {
             /**
              * Add a marker to the clusterer
              *
-             * @param {google.maps.Marker} marker
+             * @param {MarkerLike} marker
              * @param {boolean} [redraw=true]
              * @memberof MarkerClustererImpl
              */
@@ -461,7 +461,7 @@ function markerClustererFactory() {
             /**
              * Added a list of markers to the clusterer
              *
-             * @param {google.maps.Marker[]} markers
+             * @param {MarkerLike[]} markers
              * @param {boolean} [redraw=true]
              * @memberof MarkerClustererImpl
              */
@@ -478,7 +478,7 @@ function markerClustererFactory() {
             /**
              * Remove a marker from
              *
-             * @param {google.maps.Marker} marker
+             * @param {MarkerLike} marker
              * @param {boolean} [redraw=true]
              * @returns
              * @memberof MarkerClustererImpl
@@ -498,7 +498,7 @@ function markerClustererFactory() {
             /**
              * Remove a list of markers
              *
-             * @param {google.maps.Marker[]} markers
+             * @param {MarkerLike[]} markers
              * @param {boolean} [redraw=true]
              * @returns
              * @memberof MarkerClustererImpl

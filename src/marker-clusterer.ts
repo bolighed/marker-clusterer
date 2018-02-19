@@ -1,6 +1,11 @@
 import { Cluster } from './cluster';
 import { ClusterIconCtor } from './cluster-icon';
 
+export interface MarkerLike extends google.maps.OverlayView {
+    getPosition(): google.maps.LatLng;
+    getDraggable(): boolean;
+    getVisible(): boolean;
+}
 
 export interface MarkerClustererOptions {
     gridSize?: number;
@@ -18,9 +23,11 @@ export interface MarkerClustererOptions {
     imageSizes?: number[];
     batchSize?: number;
     batchSizeIE?: number;
-    calculator?: (markers: google.maps.Marker[], numStyles: number) => any;
+    calculator?: (markers: MarkerLike[], numStyles: number) => any;
     ClusterIcon?: ClusterIconCtor;
 }
+
+
 
 export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustererOptions {
     /*gridSize: number;
@@ -41,10 +48,10 @@ export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustere
     clusterClass: string;
     ClusterIcon?: ClusterIconCtor;*/
 
-    addMarker(marker: google.maps.Marker): any;
+    addMarker(marker: MarkerLike): any;
     getExtendedBounds(bounds: google.maps.LatLngBounds): any;
     clearMarkers(): any;
-    //calculator?: (markers: google.maps.Marker[], numStyles: number) => any;
+    //calculator?: (markers: MarkerLike[], numStyles: number) => any;
 }
 
 
@@ -58,7 +65,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
     class MarkerClustererImpl extends google.maps.OverlayView {
 
         private _clusters: Cluster[] = [];
-        private _markers: google.maps.Marker[] = [];
+        private _markers: MarkerLike[] = [];
         private _ready: boolean = false;
         private _listeners: google.maps.MapsEventListener[];
         private _timerRefStatic: number | undefined;
@@ -83,7 +90,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         public clusterClass: string;
         public ClusterIcon?: ClusterIconCtor;
 
-        public calculator: (markers: google.maps.Marker[], numStyles: number) => any;
+        public calculator: (markers: MarkerLike[], numStyles: number) => any;
 
         get markers() { return this._markers; }
 
@@ -123,11 +130,11 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         /**
          * Add a marker to the clusterer
          * 
-         * @param {google.maps.Marker} marker 
+         * @param {MarkerLike} marker 
          * @param {boolean} [redraw=true] 
          * @memberof MarkerClustererImpl
          */
-        addMarker(marker: google.maps.Marker, redraw: boolean = true) {
+        addMarker(marker: MarkerLike, redraw: boolean = true) {
             this._pushMarkerTo(marker)
             if (redraw)
                 this._redraw();
@@ -136,11 +143,11 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         /**
          * Added a list of markers to the clusterer
          * 
-         * @param {google.maps.Marker[]} markers 
+         * @param {MarkerLike[]} markers 
          * @param {boolean} [redraw=true] 
          * @memberof MarkerClustererImpl
          */
-        addMarkers(markers: google.maps.Marker[], redraw: boolean = true) {
+        addMarkers(markers: MarkerLike[], redraw: boolean = true) {
             for (let i = 0, ii = markers.length; i < ii; i++)
                 this._pushMarkerTo(markers[i]);
 
@@ -151,12 +158,12 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         /**
          * Remove a marker from
          * 
-         * @param {google.maps.Marker} marker 
+         * @param {MarkerLike} marker 
          * @param {boolean} [redraw=true] 
          * @returns 
          * @memberof MarkerClustererImpl
          */
-        removeMarker(marker: google.maps.Marker, redraw: boolean = true) {
+        removeMarker(marker: MarkerLike, redraw: boolean = true) {
             var removed = this._removeMarker(marker);
 
             if (!redraw && removed) {
@@ -169,12 +176,12 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         /**
          * Remove a list of markers
          * 
-         * @param {google.maps.Marker[]} markers 
+         * @param {MarkerLike[]} markers 
          * @param {boolean} [redraw=true] 
          * @returns 
          * @memberof MarkerClustererImpl
          */
-        removeMarkers(markers: google.maps.Marker[], redraw: boolean = true) {
+        removeMarkers(markers: MarkerLike[], redraw: boolean = true) {
             var i, r;
             var removed = false;
 
@@ -306,7 +313,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         //#endregion
 
 
-        private _pushMarkerTo(marker: google.maps.Marker) {
+        private _pushMarkerTo(marker: MarkerLike) {
             // If the marker is draggable add a listener so we can update the clusters on the dragend:
             if (marker.getDraggable()) {
 
@@ -357,11 +364,11 @@ export function markerClustererFactory(): MarkerClustererCTOR {
             return d;
         }
 
-        private _isMarkerInBounds(marker: google.maps.Marker, bounds: google.maps.LatLngBounds) {
+        private _isMarkerInBounds(marker: MarkerLike, bounds: google.maps.LatLngBounds) {
             return bounds.contains(marker.getPosition());
         }
 
-        private _addToClosestCluster(marker: google.maps.Marker) {
+        private _addToClosestCluster(marker: MarkerLike) {
             var i, d, cluster: Cluster, center;
             var distance = 40000; // Some large number
             var clusterToAddTo = null;
@@ -454,7 +461,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
             }
         }
 
-        private _removeMarker(marker: google.maps.Marker) {
+        private _removeMarker(marker: MarkerLike) {
             var i;
             var index = -1;
             if (this._markers.indexOf) {
@@ -501,7 +508,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
 
 
 
-    var Calculator = function (markers: google.maps.Marker[], numStyles: number) {
+    var Calculator = function (markers: MarkerLike[], numStyles: number) {
         var index = 0;
         var title = "";
         var count = markers.length //.toString();

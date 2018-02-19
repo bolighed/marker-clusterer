@@ -1,6 +1,6 @@
 /// <reference types="googlemaps" />
 import { ClusterIconCtor } from './cluster-icon';
-import { MarkerClusterer } from './marker-clusterer';
+import { MarkerClusterer, MarkerLike } from './marker-clusterer';
 export declare class Cluster {
     private _clusterIcon;
     private _markerClusterer;
@@ -14,12 +14,12 @@ export declare class Cluster {
     constructor(markerClusterer: MarkerClusterer, CustomClusterIcon?: ClusterIconCtor);
     center: google.maps.LatLng | null;
     readonly size: number;
-    readonly markers: google.maps.Marker[];
+    readonly markers: MarkerLike[];
     readonly markerCluster: MarkerClusterer;
     getBounds(): google.maps.LatLngBounds;
     remove(): void;
-    addMarker(marker: google.maps.Marker): boolean;
-    isMarkerInClusterBounds(marker: google.maps.Marker): boolean;
+    addMarker(marker: MarkerLike): boolean;
+    isMarkerInClusterBounds(marker: MarkerLike): boolean;
     private _calculateBounds();
     private _updateIcon();
     private _isMarkerAlreadyAdded(marker);

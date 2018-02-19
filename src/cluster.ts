@@ -1,5 +1,5 @@
 import { IClusterIcon, clusterIconFactory, ClusterIconCtor } from './cluster-icon';
-import { MarkerClusterer } from './marker-clusterer';
+import { MarkerClusterer, MarkerLike } from './marker-clusterer';
 
 // We wanna cache the resolved ClusterIcon
 var ClusterIconConstructor: ClusterIconCtor;
@@ -8,7 +8,7 @@ export class Cluster {
 
     private _clusterIcon: IClusterIcon;
     private _markerClusterer: MarkerClusterer;
-    private _markers: google.maps.Marker[] = [];
+    private _markers: MarkerLike[] = [];
     private _bounds: google.maps.LatLngBounds | undefined;
     private _map: google.maps.Map;
     private _averageCenter: boolean;
@@ -58,7 +58,7 @@ export class Cluster {
         delete this._markers;
     }
 
-    addMarker(marker: google.maps.Marker) {
+    addMarker(marker: MarkerLike) {
         var i;
         var mCount;
         var mz;
@@ -109,7 +109,7 @@ export class Cluster {
     }
 
 
-    isMarkerInClusterBounds(marker: google.maps.Marker) {
+    isMarkerInClusterBounds(marker: MarkerLike) {
         return this._bounds!.contains(marker.getPosition());
     }
 
@@ -141,7 +141,7 @@ export class Cluster {
         this._clusterIcon.show();
     }
 
-    private _isMarkerAlreadyAdded(marker: google.maps.Marker) {
+    private _isMarkerAlreadyAdded(marker: MarkerLike) {
         var i;
         if (this.markers.indexOf) {
             return this.markers.indexOf(marker) !== -1;
