@@ -123,6 +123,8 @@ export function popupWindowFactory(): PopupWindowConstructor {
             if (!this._anchor.parentElement) return this;
             this.setMap(null);
 
+            google.maps.event.trigger(this, 'close', this);
+
             return this;
         }
 
