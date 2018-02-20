@@ -13,9 +13,33 @@ export interface Offset {
 }
 
 export interface PopupWindowOptions {
+    /**
+     * Prevent event to bubble up the map
+     * 
+     * @type {boolean}
+     * @memberof PopupWindowOptions
+     */
     preventEventPropagation?: boolean;
+    /**
+     * Padding
+     * 
+     * @type {Offset}
+     * @memberof PopupWindowOptions
+     */
     edgeOffset?: Offset;
+    /**
+     * Should the popupwindow close, when clicking outside off the window
+     * 
+     * @type {boolean}
+     * @memberof PopupWindowOptions
+     */
     closeOnClickOutside?: boolean;
+    /**
+     * Optional class name to give the popup window
+     * 
+     * @type {string}
+     * @memberof PopupWindowOptions
+     */
     className?: string;
 }
 
