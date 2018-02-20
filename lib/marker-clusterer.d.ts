@@ -1,6 +1,7 @@
 /// <reference types="googlemaps" />
 import { ClusterIconCtor } from './cluster-icon';
 export interface MarkerLike {
+    setPosition(position: google.maps.LatLng): any;
     getPosition(): google.maps.LatLng;
     getDraggable(): boolean;
     getVisible(): boolean;
