@@ -838,8 +838,6 @@ function markerClustererFactory() {
     return MarkerClustererImpl;
 }
 
-//import { isString, delay, requestAnimationFrame } from '../../shared/utils';
-//import { Coordinates } from '../../models';
 var marker_size = function marker_size(marker) {
     return 50;
 };
@@ -891,7 +889,7 @@ function popupWindowFactory() {
              * Open the popupwindow and pan the map, so it's fully in view.
              *
              * @param {google.maps.Map} map
-             * @param {google.maps.Marker} marker
+             * @param {MarkerLike} marker
              */
 
         }, {

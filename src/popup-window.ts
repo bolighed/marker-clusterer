@@ -1,9 +1,6 @@
-//import { isString, delay, requestAnimationFrame } from '../../shared/utils';
-//import { Coordinates } from '../../models';
+import { MarkerLike } from './types';
 
-
-
-const marker_size = (marker: google.maps.Marker) => 50
+const marker_size = (marker: MarkerLike) => 50
 
 export interface Offset {
     top: number;
@@ -12,6 +9,12 @@ export interface Offset {
     right: number;
 }
 
+/**
+ * PopupWindow options
+ * 
+ * @export
+ * @interface PopupWindowOptions
+ */
 export interface PopupWindowOptions {
     /**
      * Prevent event to bubble up the map
@@ -46,7 +49,7 @@ export interface PopupWindowOptions {
 export interface PopupWindow extends google.maps.OverlayView {
     readonly container: HTMLDivElement;
     setContent(content: string | Element): this;
-    open(map: google.maps.Map, marker: google.maps.Marker): this;
+    open(map: google.maps.Map, marker: MarkerLike): this;
     close(): this;
 }
 
@@ -62,7 +65,7 @@ export function popupWindowFactory(): PopupWindowConstructor {
     /* Custom infowindow */
     return class PopupWindow extends google.maps.OverlayView {
 
-        private _marker: google.maps.Marker | undefined;
+        private _marker: MarkerLike | undefined;
         private _content: Element;
         private _anchor: HTMLDivElement;
         private _container: HTMLDivElement;
@@ -120,9 +123,9 @@ export function popupWindowFactory(): PopupWindowConstructor {
          * Open the popupwindow and pan the map, so it's fully in view.
          * 
          * @param {google.maps.Map} map 
-         * @param {google.maps.Marker} marker 
+         * @param {MarkerLike} marker 
          */
-        open(map: google.maps.Map, marker: google.maps.Marker) {
+        open(map: google.maps.Map, marker: MarkerLike) {
 
             this._marker = marker;
             this.setMap(map);

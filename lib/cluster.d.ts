@@ -1,6 +1,7 @@
 /// <reference types="googlemaps" />
 import { ClusterIconCtor } from './cluster-icon';
-import { MarkerClusterer, MarkerLike } from './marker-clusterer';
+import { MarkerClusterer } from './marker-clusterer';
+import { MarkerLike } from './types';
 export declare class Cluster {
     private _clusterIcon;
     private _markerClusterer;

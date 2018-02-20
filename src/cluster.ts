@@ -1,5 +1,6 @@
 import { IClusterIcon, clusterIconFactory, ClusterIconCtor } from './cluster-icon';
-import { MarkerClusterer, MarkerLike } from './marker-clusterer';
+import { MarkerClusterer } from './marker-clusterer';
+import { MarkerLike } from './types';
 
 // We wanna cache the resolved ClusterIcon
 var ClusterIconConstructor: ClusterIconCtor;
