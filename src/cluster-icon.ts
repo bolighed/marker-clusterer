@@ -64,6 +64,8 @@ export function clusterIconFactory(): ClusterIconCtor {
                 this.show();
             }
 
+
+
             this.getPanes().overlayMouseTarget.appendChild(this._div);
 
             // Fix for Issue 157
@@ -140,6 +142,8 @@ export function clusterIconFactory(): ClusterIconCtor {
                  */
                 google.maps.event.trigger(mc, "mouseout", this.cluster);
             });
+
+            this._stopEventPropagation();
         }
 
         onRemove() {
@@ -147,6 +151,7 @@ export function clusterIconFactory(): ClusterIconCtor {
                 this.hide();
                 google.maps.event.removeListener(this._boundsChangedListener);
                 google.maps.event.clearInstanceListeners(this._div);
+                this._unbindEventPropagationEvents();
                 this._div.parentNode.removeChild(this._div);
                 this._div = void 0;
             }
@@ -247,6 +252,33 @@ export function clusterIconFactory(): ClusterIconCtor {
             pos.y = parseInt(pos.y as any, 10);
             return pos;
         }
+
+        private _stopEventPropagation() {
+            const anchor = this._div!;
+            //anchor.style.cursor = 'auto';
+
+            ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart',
+                'pointerdown']
+                .forEach((event) => {
+                    anchor.addEventListener(event, this._handleStopEventPropagation);
+                });
+        };
+
+        private _handleStopEventPropagation(e: Event) {
+            e.stopPropagation();
+        }
+
+        private _unbindEventPropagationEvents() {
+            const anchor = this._div!;
+            //anchor.style.cursor = 'auto';
+
+            ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart',
+                'pointerdown']
+                .forEach((event) => {
+                    anchor.removeEventListener(event, this._handleStopEventPropagation);
+                });
+        }
+
 
     }
 }

@@ -150,6 +150,7 @@ function clusterIconFactory() {
                      */
                     google.maps.event.trigger(mc, "mouseout", _this2.cluster);
                 });
+                this._stopEventPropagation();
             }
         }, {
             key: "onRemove",
@@ -158,6 +159,7 @@ function clusterIconFactory() {
                     this.hide();
                     google.maps.event.removeListener(this._boundsChangedListener);
                     google.maps.event.clearInstanceListeners(this._div);
+                    this._unbindEventPropagationEvents();
                     this._div.parentNode.removeChild(this._div);
                     this._div = void 0;
                 }
@@ -248,6 +250,33 @@ function clusterIconFactory() {
                 pos.x = parseInt(pos.x, 10);
                 pos.y = parseInt(pos.y, 10);
                 return pos;
+            }
+        }, {
+            key: "_stopEventPropagation",
+            value: function _stopEventPropagation() {
+                var _this3 = this;
+
+                var anchor = this._div;
+                //anchor.style.cursor = 'auto';
+                ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart', 'pointerdown'].forEach(function (event) {
+                    anchor.addEventListener(event, _this3._handleStopEventPropagation);
+                });
+            }
+        }, {
+            key: "_handleStopEventPropagation",
+            value: function _handleStopEventPropagation(e) {
+                e.stopPropagation();
+            }
+        }, {
+            key: "_unbindEventPropagationEvents",
+            value: function _unbindEventPropagationEvents() {
+                var _this4 = this;
+
+                var anchor = this._div;
+                //anchor.style.cursor = 'auto';
+                ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart', 'pointerdown'].forEach(function (event) {
+                    anchor.removeEventListener(event, _this4._handleStopEventPropagation);
+                });
             }
         }]);
         return ClusterIconImpl;
