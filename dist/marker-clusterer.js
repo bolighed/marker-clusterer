@@ -1003,9 +1003,9 @@ function popupWindowFactory() {
 
                 var panToWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-                var projection = this._marker.getPosition();
+                var projection = this.getProjection();
                 if (projection) {
-                    var divPosition = this.getProjection().fromLatLngToDivPixel(this._marker.getPosition());
+                    var divPosition = projection.fromLatLngToDivPixel(this._marker.getPosition());
                     // Middle
                     this._anchor.style.left = divPosition.x - this._anchor.clientWidth / 2 + 'px';
                     // The home card should be place above the top of the marker
