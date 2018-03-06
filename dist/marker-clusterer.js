@@ -975,7 +975,11 @@ function popupWindowFactory() {
         }, {
             key: 'draw',
             value: function draw() {
-                var divPosition = this.getProjection().fromLatLngToDivPixel(this._marker.getPosition());
+                var projection = this.getProjection();
+                if (!projection) {
+                    return;
+                }
+                var divPosition = projection.fromLatLngToDivPixel(this._marker.getPosition());
                 // Hide the popup when it is far out of view.
                 var display = Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000 ? 'block' : 'none';
                 if (display === 'block') {
