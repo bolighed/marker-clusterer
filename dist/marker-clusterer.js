@@ -68,12 +68,12 @@ function clusterIconFactory() {
             _this.setMap(cluster.markerCluster.getMap());
             return _this;
         }
-        //get map() { return this._map; }
-        //set map(map: google.maps.Map) { this._map = map; }
-
 
         createClass(ClusterIconImpl, [{
             key: 'onAdd',
+
+            //get map() { return this._map; }
+            //set map(map: google.maps.Map) { this._map = map; }
             value: function onAdd() {
                 var _this2 = this;
 
@@ -278,6 +278,11 @@ function clusterIconFactory() {
                 this.eventPrevents.forEach(function (event) {
                     anchor.removeEventListener(event, _this4._handleStopEventPropagation);
                 });
+            }
+        }, {
+            key: 'el',
+            get: function get$$1() {
+                return this._div;
             }
         }]);
         return ClusterIconImpl;

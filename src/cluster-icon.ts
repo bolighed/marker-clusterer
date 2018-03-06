@@ -43,6 +43,10 @@ export function clusterIconFactory(): ClusterIconCtor {
         private _fontFamily: string;
         private _backgroundPosition: string;
 
+        get el(): HTMLDivElement | undefined {
+            return this._div;
+        }
+
 
         constructor(public cluster: Cluster, public styles: any) {
             super();
