@@ -63,6 +63,7 @@ function clusterIconFactory() {
 
             _this.cluster = cluster;
             _this.styles = styles;
+            _this.eventPrevents = ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart', 'pointerdown'];
             _this._className = cluster.markerCluster.clusterClass;
             _this.setMap(cluster.markerCluster.getMap());
             return _this;
@@ -72,7 +73,7 @@ function clusterIconFactory() {
 
 
         createClass(ClusterIconImpl, [{
-            key: "onAdd",
+            key: 'onAdd',
             value: function onAdd() {
                 var _this2 = this;
 
@@ -153,7 +154,7 @@ function clusterIconFactory() {
                 this._stopEventPropagation();
             }
         }, {
-            key: "onRemove",
+            key: 'onRemove',
             value: function onRemove() {
                 if (this._div && this._div.parentNode) {
                     this.hide();
@@ -165,7 +166,7 @@ function clusterIconFactory() {
                 }
             }
         }, {
-            key: "draw",
+            key: 'draw',
             value: function draw() {
                 if (this._visible) {
                     var pos = this._getPosFromLatLng(this._center);
@@ -174,7 +175,7 @@ function clusterIconFactory() {
                 }
             }
         }, {
-            key: "hide",
+            key: 'hide',
             value: function hide() {
                 if (this._div) {
                     this._div.style.display = "none";
@@ -182,7 +183,7 @@ function clusterIconFactory() {
                 this._visible = false;
             }
         }, {
-            key: "show",
+            key: 'show',
             value: function show() {
                 if (this._div) {
                     var img = "";
@@ -208,7 +209,7 @@ function clusterIconFactory() {
                 this._visible = true;
             }
         }, {
-            key: "useStyle",
+            key: 'useStyle',
             value: function useStyle(sums) {
                 this._sums = sums;
                 var index = Math.max(0, sums.index - 1);
@@ -228,12 +229,12 @@ function clusterIconFactory() {
                 this._backgroundPosition = style.backgroundPosition || "0 0";
             }
         }, {
-            key: "setCenter",
+            key: 'setCenter',
             value: function setCenter(center) {
                 this._center = center;
             }
         }, {
-            key: "createCss",
+            key: 'createCss',
             value: function createCss(pos) {
                 var style = [];
                 style.push("cursor: pointer;");
@@ -242,7 +243,7 @@ function clusterIconFactory() {
                 return style.join("");
             }
         }, {
-            key: "_getPosFromLatLng",
+            key: '_getPosFromLatLng',
             value: function _getPosFromLatLng(latlng) {
                 var pos = this.getProjection().fromLatLngToDivPixel(latlng);
                 pos.x -= this._anchorIcon[1];
@@ -252,29 +253,29 @@ function clusterIconFactory() {
                 return pos;
             }
         }, {
-            key: "_stopEventPropagation",
+            key: '_stopEventPropagation',
             value: function _stopEventPropagation() {
                 var _this3 = this;
 
                 var anchor = this._div;
                 //anchor.style.cursor = 'auto';
-                ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart', 'pointerdown'].forEach(function (event) {
+                this.eventPrevents.forEach(function (event) {
                     anchor.addEventListener(event, _this3._handleStopEventPropagation);
                 });
             }
         }, {
-            key: "_handleStopEventPropagation",
+            key: '_handleStopEventPropagation',
             value: function _handleStopEventPropagation(e) {
                 e.stopPropagation();
             }
         }, {
-            key: "_unbindEventPropagationEvents",
+            key: '_unbindEventPropagationEvents',
             value: function _unbindEventPropagationEvents() {
                 var _this4 = this;
 
                 var anchor = this._div;
                 //anchor.style.cursor = 'auto';
-                ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart', 'pointerdown'].forEach(function (event) {
+                this.eventPrevents.forEach(function (event) {
                     anchor.removeEventListener(event, _this4._handleStopEventPropagation);
                 });
             }

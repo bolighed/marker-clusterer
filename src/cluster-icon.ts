@@ -18,6 +18,10 @@ export type ClusterIconCtor = new (cluster: Cluster, styles: any) => IClusterIco
 export function clusterIconFactory(): ClusterIconCtor {
     return class ClusterIconImpl extends google.maps.OverlayView {
 
+
+        protected eventPrevents: string[] = ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart',
+            'pointerdown'];
+
         //private _map: google.maps.Map;
         private _div: HTMLDivElement | undefined;
         private _visible: boolean;
@@ -257,8 +261,7 @@ export function clusterIconFactory(): ClusterIconCtor {
             const anchor = this._div!;
             //anchor.style.cursor = 'auto';
 
-            ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart',
-                'pointerdown']
+            this.eventPrevents
                 .forEach((event) => {
                     anchor.addEventListener(event, this._handleStopEventPropagation);
                 });
@@ -272,8 +275,7 @@ export function clusterIconFactory(): ClusterIconCtor {
             const anchor = this._div!;
             //anchor.style.cursor = 'auto';
 
-            ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart',
-                'pointerdown']
+            this.eventPrevents
                 .forEach((event) => {
                     anchor.removeEventListener(event, this._handleStopEventPropagation);
                 });
