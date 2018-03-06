@@ -204,11 +204,15 @@ export function popupWindowFactory(): PopupWindowConstructor {
          */
         private _reposition(panToWindow: boolean = false) {
 
-            const divPosition = this.getProjection().fromLatLngToDivPixel(this._marker!.getPosition());
-            // Middle
-            this._anchor.style.left = divPosition.x - (this._anchor.clientWidth / 2) + 'px';
-            // The home card should be place above the top of the marker
-            this._anchor.style.top = (divPosition.y - this._anchor.clientHeight - marker_size(this._marker!)) + 'px';
+            const projection = this._marker!.getPosition();
+
+            if (projection) {
+                const divPosition = this.getProjection().fromLatLngToDivPixel(this._marker!.getPosition());
+                // Middle
+                this._anchor.style.left = divPosition.x - (this._anchor.clientWidth / 2) + 'px';
+                // The home card should be place above the top of the marker
+                this._anchor.style.top = (divPosition.y - this._anchor.clientHeight - marker_size(this._marker!)) + 'px';
+            }
 
             if (panToWindow) {
                 requestAnimationFrame(() => this._panMap());

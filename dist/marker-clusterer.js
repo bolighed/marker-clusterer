@@ -1003,11 +1003,14 @@ function popupWindowFactory() {
 
                 var panToWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-                var divPosition = this.getProjection().fromLatLngToDivPixel(this._marker.getPosition());
-                // Middle
-                this._anchor.style.left = divPosition.x - this._anchor.clientWidth / 2 + 'px';
-                // The home card should be place above the top of the marker
-                this._anchor.style.top = divPosition.y - this._anchor.clientHeight - marker_size(this._marker) + 'px';
+                var projection = this._marker.getPosition();
+                if (projection) {
+                    var divPosition = this.getProjection().fromLatLngToDivPixel(this._marker.getPosition());
+                    // Middle
+                    this._anchor.style.left = divPosition.x - this._anchor.clientWidth / 2 + 'px';
+                    // The home card should be place above the top of the marker
+                    this._anchor.style.top = divPosition.y - this._anchor.clientHeight - marker_size(this._marker) + 'px';
+                }
                 if (panToWindow) {
                     requestAnimationFrame(function () {
                         return _this3._panMap();
