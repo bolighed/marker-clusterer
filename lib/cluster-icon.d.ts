@@ -10,6 +10,7 @@ export interface IClusterIcon extends google.maps.OverlayView {
     show(): any;
     setCenter(lnglat: google.maps.LatLng): any;
     useStyle(a: ClusterIconInfo): any;
+    readonly el: HTMLElement | undefined;
 }
 export declare type ClusterIconCtor = new (cluster: Cluster, styles: any) => IClusterIcon;
 export declare function clusterIconFactory(): ClusterIconCtor;
