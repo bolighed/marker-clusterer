@@ -50,6 +50,7 @@ export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustere
      * @memberof MarkerClustererImpl
      */
     removeMarkers(markers: MarkerLike[], redraw?: boolean): any;
+    repaint(): any;
 }
 export declare type MarkerClustererCTOR = new (map: google.maps.Map, options: MarkerClustererOptions) => MarkerClusterer;
 export declare function markerClustererFactory(): MarkerClustererCTOR;

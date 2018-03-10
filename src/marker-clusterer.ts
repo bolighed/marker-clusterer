@@ -77,6 +77,8 @@ export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustere
      */
     removeMarkers(markers: MarkerLike[], redraw?: boolean): any;
     //calculator?: (markers: MarkerLike[], numStyles: number) => any;
+
+    repaint(): any;
 }
 
 
