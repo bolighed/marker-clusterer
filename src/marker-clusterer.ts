@@ -45,8 +45,37 @@ export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustere
     ClusterIcon?: ClusterIconCtor;*/
 
     addMarker(marker: MarkerLike): any;
+
     getExtendedBounds(bounds: google.maps.LatLngBounds): any;
     clearMarkers(): any;
+    /**
+         * Added a list of markers to the clusterer
+         * 
+         * @param {MarkerLike[]} markers 
+         * @param {boolean} [redraw=true] 
+         * @memberof MarkerClustererImpl
+         */
+    addMarkers(markers: MarkerLike[], redraw?: boolean): any;
+
+    /**
+     * Remove a marker from
+     * 
+     * @param {MarkerLike} marker 
+     * @param {boolean} [redraw=true] 
+     * @returns 
+     * @memberof MarkerClustererImpl
+     */
+    removeMarker(marker: MarkerLike, redraw?: boolean): any;
+
+    /**
+     * Remove a list of markers
+     * 
+     * @param {MarkerLike[]} markers 
+     * @param {boolean} [redraw=true] 
+     * @returns 
+     * @memberof MarkerClustererImpl
+     */
+    removeMarkers(markers: MarkerLike[], redraw?: boolean): any;
     //calculator?: (markers: MarkerLike[], numStyles: number) => any;
 }
 
