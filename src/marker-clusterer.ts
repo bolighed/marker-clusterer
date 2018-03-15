@@ -44,7 +44,7 @@ export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustere
     clusterClass: string;
     ClusterIcon?: ClusterIconCtor;*/
 
-    addMarker(marker: MarkerLike): any;
+    addMarker(marker: MarkerLike, redraw?: boolean): any;
 
     getExtendedBounds(bounds: google.maps.LatLngBounds): any;
     clearMarkers(): any;
