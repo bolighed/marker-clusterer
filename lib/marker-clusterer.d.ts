@@ -21,7 +21,7 @@ export interface MarkerClustererOptions {
     ClusterIcon?: ClusterIconCtor;
 }
 export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustererOptions {
-    addMarker(marker: MarkerLike): any;
+    addMarker(marker: MarkerLike, redraw?: boolean): any;
     getExtendedBounds(bounds: google.maps.LatLngBounds): any;
     clearMarkers(): any;
     /**
