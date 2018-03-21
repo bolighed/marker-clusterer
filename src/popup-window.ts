@@ -44,6 +44,8 @@ export interface PopupWindowOptions {
      * @memberof PopupWindowOptions
      */
     className?: string;
+
+    markerOffset?: number;
 }
 
 export interface PopupWindow extends google.maps.OverlayView {
@@ -211,7 +213,7 @@ export function popupWindowFactory(): PopupWindowConstructor {
                 // Middle
                 this._anchor.style.left = divPosition.x - (this._anchor.clientWidth / 2) + 'px';
                 // The home card should be place above the top of the marker
-                this._anchor.style.top = (divPosition.y - this._anchor.clientHeight - marker_size(this._marker!)) + 'px';
+                this._anchor.style.top = (divPosition.y - this._anchor.clientHeight - (this.options.markerOffset || 50)) + 'px';
             }
 
             if (panToWindow) {

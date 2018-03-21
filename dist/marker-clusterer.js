@@ -873,9 +873,6 @@ function markerClustererFactory() {
     return MarkerClustererImpl;
 }
 
-var marker_size = function marker_size(marker) {
-    return 50;
-};
 // We need to wrap the class definition in a function,
 // because google.maps is loaded asyncronly, so it is 
 // imposible to subclass or use any google maps spcific types!
@@ -1009,7 +1006,7 @@ function popupWindowFactory() {
                     // Middle
                     this._anchor.style.left = divPosition.x - this._anchor.clientWidth / 2 + 'px';
                     // The home card should be place above the top of the marker
-                    this._anchor.style.top = divPosition.y - this._anchor.clientHeight - marker_size(this._marker) + 'px';
+                    this._anchor.style.top = divPosition.y - this._anchor.clientHeight - (this.options.markerOffset || 50) + 'px';
                 }
                 if (panToWindow) {
                     requestAnimationFrame(function () {

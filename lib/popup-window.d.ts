@@ -41,6 +41,7 @@ export interface PopupWindowOptions {
      * @memberof PopupWindowOptions
      */
     className?: string;
+    markerOffset?: number;
 }
 export interface PopupWindow extends google.maps.OverlayView {
     readonly container: HTMLDivElement;
