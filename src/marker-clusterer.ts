@@ -79,6 +79,10 @@ export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustere
     //calculator?: (markers: MarkerLike[], numStyles: number) => any;
 
     repaint(): any;
+    /**
+     * Get current list of markers
+     */
+    readonly markers: MarkerLike[];
 }
 
 
