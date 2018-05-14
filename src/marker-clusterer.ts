@@ -26,23 +26,6 @@ export interface MarkerClustererOptions {
 
 
 export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustererOptions {
-    /*gridSize: number;
-    minClusterSize: number;
-    maxZoom: number;
-    styles: any[];
-    title: string;
-    zoomOnClick: boolean;
-    avarageCenter: boolean;
-    ignoreHidden: boolean;
-    enableRetinaIcons: boolean;
-
-    imagePath: string;
-    imageExtension: string
-    imageSizes: number[];
-    batchSize: number;
-    batchSizeIE: number;
-    clusterClass: string;
-    ClusterIcon?: ClusterIconCtor;*/
 
     addMarker(marker: MarkerLike, redraw?: boolean): any;
 
@@ -83,6 +66,9 @@ export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustere
      * Get current list of markers
      */
     readonly markers: MarkerLike[];
+
+    enableClustering: boolean;
+
 }
 
 
@@ -100,6 +86,7 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         private _ready: boolean = false;
         private _listeners: google.maps.MapsEventListener[];
         private _timerRefStatic: number | undefined;
+        private _enableClustering: boolean;
 
         //#region Properties
 
@@ -124,6 +111,18 @@ export function markerClustererFactory(): MarkerClustererCTOR {
         public calculator: (markers: MarkerLike[], numStyles: number) => any;
 
         get markers() { return this._markers; }
+
+        get enableClustering() {
+            return this._enableClustering;
+        }
+
+        set enableClustering(enable: boolean) {
+            const ret = this._enableClustering !== enable;
+            this._enableClustering = enable;
+            if (ret)
+                this.repaint();
+        }
+
 
         //#endregion
 

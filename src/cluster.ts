@@ -84,28 +84,35 @@ export class Cluster {
         (marker as any).isAdded = true;
         this._markers.push(marker);
 
-        mCount = this._markers.length;
-        mz = this._markerClusterer.maxZoom;
-        if (mz != null && this._map.getZoom() > mz) {
-            // Zoomed in past max zoom, so show the marker.
-            if (marker.getMap() !== this._map) {
-                marker.setMap(this._map);
+
+        if (this._markerClusterer.enableClustering) {
+            mCount = this._markers.length;
+            mz = this._markerClusterer.maxZoom;
+            if (mz != null && this._map.getZoom() > mz) {
+                // Zoomed in past max zoom, so show the marker.
+                if (marker.getMap() !== this._map) {
+                    marker.setMap(this._map);
+                }
+            } else if (mCount < this._minClusterSize) {
+                // Min cluster size not reached so show the marker.
+                if (marker.getMap() !== this._map) {
+                    marker.setMap(this._map);
+                }
+            } else if (mCount === this._minClusterSize) {
+                // Hide the markers that were showing.
+                for (i = 0; i < mCount; i++) {
+                    this._markers[i].setMap(null);
+                }
+            } else {
+                marker.setMap(null);
             }
-        } else if (mCount < this._minClusterSize) {
-            // Min cluster size not reached so show the marker.
-            if (marker.getMap() !== this._map) {
-                marker.setMap(this._map);
-            }
-        } else if (mCount === this._minClusterSize) {
-            // Hide the markers that were showing.
-            for (i = 0; i < mCount; i++) {
-                this._markers[i].setMap(null);
-            }
+
+            this._updateIcon();
         } else {
-            marker.setMap(null);
+            this._clusterIcon.hide();
+            marker.setMap(this._map);
         }
 
-        this._updateIcon();
         return true;
     }
 

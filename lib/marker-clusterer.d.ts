@@ -55,6 +55,7 @@ export interface MarkerClusterer extends google.maps.OverlayView, MarkerClustere
      * Get current list of markers
      */
     readonly markers: MarkerLike[];
+    enableClustering: boolean;
 }
 export declare type MarkerClustererCTOR = new (map: google.maps.Map, options: MarkerClustererOptions) => MarkerClusterer;
 export declare function markerClustererFactory(): MarkerClustererCTOR;
